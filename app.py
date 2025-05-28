@@ -16,7 +16,7 @@ WEBHOOK_URL = os.getenv('WEBHOOK_URL')
 # === prepare classifier ===
 encoder = joblib.load("cv_encoder.pkl")  # Load the encoder
 # Load the pre-trained model
-model = joblib.load("model.pkl")
+model = joblib.load("lr_model.pkl")
 
 # === Flask Application Setup ===
 
