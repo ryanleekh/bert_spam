@@ -56,3 +56,6 @@ def telegram_webhook():
 
         requests.get(url + f'sendMessage?parse_mode=markdown&chat_id={chat_id}&text=Send me some text: (or type quit)')
         return 'OK', 200
+
+if __name__ == "__main__":
+    app.run()
