@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 import requests
 import joblib
 
+
+
 # === Environment Setup ===
 load_dotenv()
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
@@ -17,6 +19,13 @@ WEBHOOK_URL = os.getenv('WEBHOOK_URL')
 encoder = joblib.load("cv_encoder.pkl")  # Load the encoder
 # Load the pre-trained model
 model = joblib.load("lr_model.pkl")
+
+# message_text = "Had your mobile 11 months or more? U R entitled to Update to the latest colour mobiles with camera for Free! Call The Mobile Update Co FREE on 08002986030"
+# # run classification
+# X_emb = encoder.transform([message_text])
+# print(X_emb.shape)
+# pred = model.predict(X_emb)
+# print(pred)
 
 # === Flask Application Setup ===
 
