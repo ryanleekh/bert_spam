@@ -34,9 +34,10 @@ with app.app_context():
     set_webhook_url = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/setWebhook?url={WEBHOOK_URL}/webhook'
 
     response = requests.post(set_webhook_url, json={'url': WEBHOOK_URL})
+    print(f"Webhook set: {response.json()}")
 
 
-
+# Flask Routes ===
 
 @app.route('/', methods=['GET'])
 def index():
@@ -62,7 +63,7 @@ def telegram_webhook():
         requests.get(send_action)
 
         # run classification
-        X_emb = encoder.transform(message_text)
+        X_emb = encoder.transform([message_text])
         pred = model.predict([X_emb])
         if pred=="ham":
             result = "Not Spam"
