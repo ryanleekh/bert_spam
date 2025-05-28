@@ -14,7 +14,7 @@ url = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/'
 WEBHOOK_URL = os.getenv('WEBHOOK_URL')
 
 # === prepare classifier ===
-encoder = joblib.load("encoder.pkl")  # Load the encoder
+encoder = joblib.load("cv_encoder.pkl")  # Load the encoder
 # Load the pre-trained model
 model = joblib.load("model.pkl")
 
