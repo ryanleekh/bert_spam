@@ -2,23 +2,41 @@
 import os
 
 # === Third-Party Packages ===
-from flask import Flask, request
+from flask import Flask, request, cont
 from dotenv import load_dotenv
 import requests
 import joblib
 
 # === Environment Setup ===
 load_dotenv()
-TELEGRAM_BERT_API_KEY = os.getenv('TELEGRAM_BERT_API_KEY')
-url = f'https://api.telegram.org/bot{TELEGRAM_BERT_API_KEY}/'
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
+url = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/'
+WEBHOOK_URL = os.getenv('WEBHOOK_URL')
 
 # === prepare classifier ===
+encoder = joblib.load("encoder.pkl")  # Load the encoder
+# Load the pre-trained model
 model = joblib.load("model.pkl")
-from sentence_transformers import SentenceTransformer
-encoder = SentenceTransformer('bert-base-nli-mean-tokens')
 
+# === Flask Application Setup ===
 
 app = Flask(__name__)
+
+# Register the startup function
+with app.app_context():
+    delete_webhook_url = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/deleteWebhook'
+    response = requests.post(
+        delete_webhook_url,
+        json={'url': WEBHOOK_URL, 'drop_pending_updates': True}
+    )
+
+    # Then set the new webhook so Telegram knows where to send updates
+    set_webhook_url = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/setWebhook?url={WEBHOOK_URL}/webhook'
+
+    response = requests.post(set_webhook_url, json={'url': WEBHOOK_URL})
+
+
+
 
 @app.route('/', methods=['GET'])
 def index():
@@ -44,7 +62,7 @@ def telegram_webhook():
         requests.get(send_action)
 
         # run classification
-        X_emb = encoder.encode(message_text)
+        X_emb = encoder.transform(message_text)
         pred = model.predict([X_emb])
         if pred=="ham":
             result = "Not Spam"
