@@ -61,7 +61,7 @@ def telegram_webhook():
     message_text = message.get('text', '')
 
     if message_text.lower() == '/start':
-        requests.get(url + f'sendMessage?chat_id={chat_id}&text={"Send me some text: (or type quit)"}')
+        requests.get(url + f'sendMessage?chat_id={chat_id}&text={"Send me some text: (or type /quit)"}')
         return 'OK', 200
     elif message_text.lower() == "/quit":
         requests.get(url + f'sendMessage?chat_id={chat_id}&text=Good%20Bye!')
