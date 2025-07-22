@@ -75,6 +75,7 @@ def telegram_webhook():
         X_emb = encoder.transform([message_text])
         print(X_emb.shape)
         pred = model.predict(X_emb)
+        print(pred)
 
         if pred=="ham":
             result = "Not Spam"
@@ -88,4 +89,4 @@ def telegram_webhook():
         return 'OK', 200
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug='true')
